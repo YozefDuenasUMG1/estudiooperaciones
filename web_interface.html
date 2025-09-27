@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solucionador de Investigación de Operaciones</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        
+        .problem-section {
+            background-color: #ecf0f1;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .method-box {
+            background-color: #fff;
+            border: 1px solid #bdc3c7;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .cost-cell {
+            background-color: #e8f6f3;
+        }
+        
+        .allocation-cell {
+            background-color: #fef9e7;
+            font-weight: bold;
+        }
+        
+        .result-box {
+            background-color: #d5f4e6;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            background-color: #2980b9;
+        }
+        
+        .steps-list {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #17a2b8;
+        }
+        
+        .example-data {
+            font-family: 'Courier New', monospace;
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 Solucionador de Investigación de Operaciones</h1>
+        
+        <div class="problem-section">
+            <h2>📋 Descripción del Proyecto</h2>
+            <p>Este proyecto implementa algoritmos clásicos de investigación de operaciones para resolver problemas de optimización:</p>
+            <ul>
+                <li><strong>Problemas de Transporte</strong>: Optimización de distribución de bienes desde múltiples fuentes a múltiples destinos</li>
+                <li><strong>Problemas de Asignación</strong>: Asignación óptima de trabajadores a tareas con costos mínimos</li>
+            </ul>
+        </div>
+
+        <div class="problem-section">
+            <h2>🚚 Problema de Transporte - Ejemplo</h2>
+            
+            <h3>Datos del Problema:</h3>
+            <table>
+                <tr>
+                    <th>Proveedor / Destino</th>
+                    <th>Destino 1</th>
+                    <th>Destino 2</th>
+                    <th>Destino 3</th>
+                    <th>Destino 4</th>
+                    <th>Oferta</th>
+                </tr>
+                <tr>
+                    <td><strong>Proveedor 1</strong></td>
+                    <td class="cost-cell">8</td>
+                    <td class="cost-cell">6</td>
+                    <td class="cost-cell">10</td>
+                    <td class="cost-cell">9</td>
+                    <td><strong>20</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Proveedor 2</strong></td>
+                    <td class="cost-cell">9</td>
+                    <td class="cost-cell">12</td>
+                    <td class="cost-cell">13</td>
+                    <td class="cost-cell">7</td>
+                    <td><strong>30</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Proveedor 3</strong></td>
+                    <td class="cost-cell">14</td>
+                    <td class="cost-cell">9</td>
+                    <td class="cost-cell">16</td>
+                    <td class="cost-cell">5</td>
+                    <td><strong>25</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Demanda</strong></td>
+                    <td><strong>15</strong></td>
+                    <td><strong>20</strong></td>
+                    <td><strong>15</strong></td>
+                    <td><strong>25</strong></td>
+                    <td><strong>75 Total</strong></td>
+                </tr>
+            </table>
+
+            <div class="method-box">
+                <h4>🎯 Método del Costo Mínimo</h4>
+                <div class="steps-list">
+                    <ol>
+                        <li>Encontrar la celda con menor costo (3,4) = 5</li>
+                        <li>Asignar máximo posible: min(25, 25) = 25</li>
+                        <li>Continuar con siguiente menor costo (1,2) = 6</li>
+                        <li>Repetir hasta completar asignación</li>
+                    </ol>
+                </div>
+                
+                <h5>Asignación Final:</h5>
+                <table>
+                    <tr>
+                        <th>Proveedor</th>
+                        <th>Destino 1</th>
+                        <th>Destino 2</th>
+                        <th>Destino 3</th>
+                        <th>Destino 4</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Proveedor 1</strong></td>
+                        <td>0</td>
+                        <td class="allocation-cell">20</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proveedor 2</strong></td>
+                        <td class="allocation-cell">15</td>
+                        <td>0</td>
+                        <td class="allocation-cell">15</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proveedor 3</strong></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="allocation-cell">25</td>
+                    </tr>
+                </table>
+                
+                <div class="result-box">
+                    <strong>💰 Costo Total: $575.00</strong>
+                </div>
+            </div>
+
+            <div class="method-box">
+                <h4>📊 Método de Aproximación de Vogel (VAM)</h4>
+                <div class="steps-list">
+                    <ol>
+                        <li>Calcular penalidades por fila y columna</li>
+                        <li>Seleccionar fila/columna con mayor penalidad</li>
+                        <li>Asignar en celda de menor costo de esa fila/columna</li>
+                        <li>Actualizar oferta/demanda y repetir</li>
+                    </ol>
+                </div>
+                
+                <div class="result-box">
+                    <strong>💰 Costo Total VAM: $575.00</strong><br>
+                    <em>En este caso, ambos métodos producen el mismo resultado óptimo</em>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-section">
+            <h2>👥 Problema de Asignación - Ejemplo</h2>
+            
+            <h3>Datos del Problema:</h3>
+            <table>
+                <tr>
+                    <th>Trabajador / Tarea</th>
+                    <th>Tarea 1</th>
+                    <th>Tarea 2</th>
+                    <th>Tarea 3</th>
+                    <th>Tarea 4</th>
+                </tr>
+                <tr>
+                    <td><strong>Trabajador 1</strong></td>
+                    <td class="cost-cell">9</td>
+                    <td class="cost-cell">2</td>
+                    <td class="cost-cell">7</td>
+                    <td class="cost-cell">8</td>
+                </tr>
+                <tr>
+                    <td><strong>Trabajador 2</strong></td>
+                    <td class="cost-cell">6</td>
+                    <td class="cost-cell">4</td>
+                    <td class="cost-cell">3</td>
+                    <td class="cost-cell">7</td>
+                </tr>
+                <tr>
+                    <td><strong>Trabajador 3</strong></td>
+                    <td class="cost-cell">5</td>
+                    <td class="cost-cell">8</td>
+                    <td class="cost-cell">1</td>
+                    <td class="cost-cell">8</td>
+                </tr>
+                <tr>
+                    <td><strong>Trabajador 4</strong></td>
+                    <td class="cost-cell">7</td>
+                    <td class="cost-cell">6</td>
+                    <td class="cost-cell">9</td>
+                    <td class="cost-cell">4</td>
+                </tr>
+            </table>
+
+            <div class="method-box">
+                <h4>🧮 Método Húngaro</h4>
+                <div class="steps-list">
+                    <ol>
+                        <li><strong>Reducción de filas:</strong> Restar el mínimo de cada fila</li>
+                        <li><strong>Reducción de columnas:</strong> Restar el mínimo de cada columna</li>
+                        <li><strong>Cobertura de ceros:</strong> Cubrir todos los ceros con líneas mínimas</li>
+                        <li><strong>Asignación óptima:</strong> Encontrar asignación de costo mínimo</li>
+                    </ol>
+                </div>
+                
+                <h5>Asignación Óptima:</h5>
+                <table>
+                    <tr>
+                        <th>Trabajador</th>
+                        <th>Tarea Asignada</th>
+                        <th>Costo</th>
+                    </tr>
+                    <tr>
+                        <td>Trabajador 1</td>
+                        <td class="allocation-cell">Tarea 2</td>
+                        <td>$2.00</td>
+                    </tr>
+                    <tr>
+                        <td>Trabajador 2</td>
+                        <td class="allocation-cell">Tarea 1</td>
+                        <td>$6.00</td>
+                    </tr>
+                    <tr>
+                        <td>Trabajador 3</td>
+                        <td class="allocation-cell">Tarea 3</td>
+                        <td>$1.00</td>
+                    </tr>
+                    <tr>
+                        <td>Trabajador 4</td>
+                        <td class="allocation-cell">Tarea 4</td>
+                        <td>$4.00</td>
+                    </tr>
+                </table>
+                
+                <div class="result-box">
+                    <strong>💰 Costo Total Óptimo: $13.00</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-section">
+            <h2>💻 Uso del Código</h2>
+            
+            <h3>Instalación:</h3>
+            <div class="code-block">
+pip install -r requirements.txt
+            </div>
+            
+            <h3>Ejecutar Ejemplos:</h3>
+            <div class="code-block">
+python operations_research_solver.py
+            </div>
+            
+            <h3>Interfaz Interactiva:</h3>
+            <div class="code-block">
+python interactive_solver.py
+            </div>
+            
+            <h3>Ejemplo de Código Python:</h3>
+            <div class="code-block">
+from operations_research_solver import TransportationProblem
+
+# Definir problema
+costs = [[8, 6, 10, 9], [9, 12, 13, 7], [14, 9, 16, 5]]
+supply = [20, 30, 25]
+demand = [15, 20, 15, 25]
+
+# Resolver
+tp = TransportationProblem(costs, supply, demand)
+allocation, cost = tp.vogel_approximation_method()
+            </div>
+        </div>
+
+        <div class="problem-section">
+            <h2>📚 Recursos Incluidos</h2>
+            <ul>
+                <li>📄 <strong>PROBLEMAS DE TRANSPORTE Y ASIGNACION.pdf</strong> - Teoría fundamental</li>
+                <li>📄 <strong>metodo-aproximacion-vogel.pdf</strong> - Guía del método VAM</li>
+                <li>📄 <strong>costo-minimo.pdf</strong> - Método del costo mínimo</li>
+                <li>📊 <strong>Semana 9 metodo hungaro.xlsx</strong> - Ejemplos del método húngaro</li>
+                <li>💻 <strong>operations_research_solver.py</strong> - Implementación completa</li>
+                <li>🎮 <strong>interactive_solver.py</strong> - Interfaz interactiva</li>
+            </ul>
+        </div>
+
+        <div class="result-box">
+            <h3>✅ Solución Completa Implementada</h3>
+            <p>Este proyecto proporciona una implementación completa de los métodos de investigación de operaciones más utilizados, con ejemplos prácticos y documentación detallada.</p>
+        </div>
+    </div>
+</body>
+</html>
